@@ -1,0 +1,15 @@
+{
+    "name": "RP FastFood And Restaurant",
+    "short_name": "RP FastFood",
+    "start_url": "/",
+    "display": "standalone",
+    "background_color": "#fff8ed",
+    "theme_color": "#e87521",
+    "icons": [
+        {
+            "src": "/favicon.svg",
+            "sizes": "any",
+            "type": "image/svg+xml"
+        }
+    ]
+}
