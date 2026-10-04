@@ -1,4 +1,5 @@
 import { ArrowRight, MapPin, ShoppingBag, Sparkles } from 'lucide-react';
+import heroImage from '../assets/illustrations/delivery3.png';
 
 export default function Hero({ onOrder }: { onOrder: () => void }) {
   return (
@@ -44,7 +45,7 @@ export default function Hero({ onOrder }: { onOrder: () => void }) {
         <div className="hero-art">
           <div className="art-glow" />
           <img
-            src="/src/assets/illustrations/delivery3.png"
+            src={heroImage}
             alt="Friendly delivery rider on a scooter carrying a restaurant food box"
           />
           <div className="floating-card">

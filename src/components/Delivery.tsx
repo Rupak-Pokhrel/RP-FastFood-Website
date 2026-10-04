@@ -1,4 +1,5 @@
 import { Bike, MapPin, ShieldCheck } from 'lucide-react';
+import deliveryImage from '../assets/illustrations/delivery6.png';
 
 export default function Delivery({ onOrder }: { onOrder: () => void }) {
   return (
@@ -28,7 +29,7 @@ export default function Delivery({ onOrder }: { onOrder: () => void }) {
         </div>
         <img
           className="delivery-visual"
-          src="/src/assets/illustrations/delivery6.png"
+          src={deliveryImage}
           alt="Scooter delivery illustration"
         />
       </div>

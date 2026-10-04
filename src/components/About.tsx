@@ -1,4 +1,5 @@
 import { Heart, Leaf, Utensils } from 'lucide-react';
+import aboutImage from '../assets/images/About.png';
 
 export default function About() {
   return (
@@ -15,7 +16,7 @@ export default function About() {
             }}
           >
             <img
-              src="src/assets/images/About.png"
+              src={aboutImage}
               alt="About RP FastFood And Restaurant"
               style={{
                 display: 'block',

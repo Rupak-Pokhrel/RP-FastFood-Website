@@ -17,16 +17,28 @@ const pool = new Pool({
   connectionTimeoutMillis: 10000,
 });
 
+const normalizeOrigin = (value) => String(value || '').trim().replace(/\/+$/, '');
 const allowedOrigins = (process.env.CLIENT_URL || 'http://localhost:5173')
-  .split(',').map((origin) => origin.trim()).filter(Boolean);
+  .split(',').map(normalizeOrigin).filter(Boolean);
 
-app.use(cors({
-  origin(origin, callback) {
-    if (!origin || allowedOrigins.includes('*') || allowedOrigins.includes(origin)) return callback(null, true);
-    return callback(new Error('CORS origin not allowed'));
-  },
+// The site and the API live on the same Vercel domain, so a request whose Origin
+// host equals the Host header is same-origin and is always allowed. CLIENT_URL
+// is only needed for other origins (e.g. localhost:5173 or a custom domain).
+app.use(cors((req, callback) => {
+  const origin = normalizeOrigin(req.headers.origin);
+  const host = req.headers['x-forwarded-host'] || req.headers.host;
+  let sameOrigin = false;
+  try { sameOrigin = !!origin && new URL(origin).host === host; } catch { /* ignore bad origin */ }
+  const allowed = !origin || sameOrigin || allowedOrigins.includes('*') || allowedOrigins.includes(origin);
+  callback(null, { origin: allowed });
 }));
 app.use(express.json({ limit: '1mb' }));
+
+let adminReady = null;
+function ensureAdminOnce() {
+  if (!adminReady) adminReady = ensureAdminAccount().catch((error) => { adminReady = null; throw error; });
+  return adminReady;
+}
 
 const validStatuses = ['pending', 'accepted', 'preparing', 'ready', 'out_for_delivery', 'delivered', 'cancelled'];
 
@@ -55,6 +67,7 @@ app.post('/api/auth/login', async (req, res) => {
   try {
     const { email, password } = req.body || {};
     if (!email || !password) return res.status(400).json({ message: 'Email and password are required.' });
+    await ensureAdminOnce();
     const { rows } = await pool.query('SELECT id, email, password_hash FROM admins WHERE email = $1 LIMIT 1', [email.trim().toLowerCase()]);
     if (!rows.length) return res.status(401).json({ message: 'Invalid email or password.' });
     const admin = rows[0];
@@ -194,6 +207,11 @@ app.get('/api/dashboard/stats', auth, async (_req, res) => {
     `);
     res.json({ ...stats, grossSales: Number(stats.grossSales) });
   } catch (error) { res.status(500).json({ message: error.message }); }
+});
+
+app.use((error, _req, res, _next) => {
+  console.error(error);
+  res.status(error.status || 500).json({ message: error.message || 'Server error.' });
 });
 
 export async function ensureAdminAccount() {
