@@ -5,9 +5,12 @@ import { restaurantConfig } from '../config/restaurant';
 export default function Navbar({
   cartCount,
   onOrder,
+  onNavigate,
 }: {
   cartCount: number;
   onOrder: () => void;
+  // Provided on pages (like checkout) where the #sections are not on screen.
+  onNavigate?: (hash: string) => void;
 }) {
   const [open, setOpen] = useState(false);
 
@@ -20,10 +23,18 @@ export default function Navbar({
     ['Contact', '#contact'],
   ];
 
+  const handleLink = (e: React.MouseEvent, hash: string) => {
+    setOpen(false);
+    if (onNavigate) {
+      e.preventDefault();
+      onNavigate(hash);
+    }
+  };
+
   return (
     <header className="navbar">
       <div className="nav-inner">
-        <a className="brand" href="#home">
+        <a className="brand" href="#home" onClick={(e) => handleLink(e, '#home')}>
           <div className="logo-slot">
             <img
               src="/RP_FastFood_Logo.png"
@@ -42,7 +53,7 @@ export default function Navbar({
 
         <nav className={open ? 'nav-links open' : 'nav-links'}>
           {links.map(([t, h]) => (
-            <a key={h} href={h} onClick={() => setOpen(false)}>
+            <a key={h} href={h} onClick={(e) => handleLink(e, h)}>
               {t}
             </a>
           ))}

@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { ShoppingBag, X } from 'lucide-react';
 import Navbar from './components/Navbar';
 import Hero from './components/Hero';
@@ -26,7 +26,33 @@ function CustomerApp() {
   const [checkout, setCheckout] = useState(false);
   const [distance, setDistance] = useState(1);
 
+  const [pendingHash, setPendingHash] = useState<string | null>(null);
+
   const order = () => setCartOpen(true);
+
+  // Leave checkout and jump to a section of the home page (#home, #menu, ...).
+  const goTo = (hash: string) => {
+    setCheckout(false);
+    setPendingHash(hash);
+  };
+
+  // Back from checkout to the cart drawer on the home page.
+  const backToCart = () => {
+    setCheckout(false);
+    setCartOpen(true);
+  };
+
+  useEffect(() => {
+    if (checkout) {
+      window.scrollTo(0, 0);
+      return;
+    }
+    if (pendingHash) {
+      document.querySelector(pendingHash)?.scrollIntoView();
+      window.history.replaceState(null, '', pendingHash);
+      setPendingHash(null);
+    }
+  }, [checkout, pendingHash]);
 
   const add = (item: MenuItem, q: number) => {
     cart.add(item, q);
@@ -36,15 +62,15 @@ function CustomerApp() {
   if (checkout) {
     return (
       <>
-        <Navbar cartCount={cart.count} onOrder={order} />
+        <Navbar cartCount={cart.count} onOrder={backToCart} onNavigate={goTo} />
         <Checkout
           items={cart.items}
           subtotal={cart.subtotal}
           distance={distance}
-          onBack={() => setCheckout(false)}
+          onBack={backToCart}
           onPlaced={() => {
             cart.clear();
-            setCheckout(false);
+            goTo('#menu');
           }}
         />
         <Footer />
