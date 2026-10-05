@@ -1930,3 +1930,31 @@ footer
 .form-error{background:#fff0f0;border:1px solid #f0c7c7;color:#a52b2b;padding:10px 12px;border-radius:10px;font-size:13px}.checkout-form button:disabled{opacity:.65;cursor:not-allowed}
 @media(max-width:900px){.admin-stats{grid-template-columns:repeat(2,1fr)}.admin-order-grid{grid-template-columns:1fr 1fr}.order-control-panel{grid-column:1/-1;grid-template-columns:1fr 1fr 1fr;align-items:end}}
 @media(max-width:650px){.admin-header,.admin-toolbar{display:block}.admin-actions{margin-top:15px}.admin-stats{grid-template-columns:1fr 1fr}.admin-order-grid{grid-template-columns:1fr}.order-control-panel{grid-column:auto;grid-template-columns:1fr}.admin-filters{margin-top:14px}.admin-footer{display:block}.admin-footer span{margin-top:6px}.admin-login-card{padding:27px}.admin-header h1{font-size:32px}}
+/* ===== Mobile-only improvements (phones up to 700px wide) =====
+   Everything below is inside this media query, so the desktop and tablet
+   layouts are NOT affected. Placed last so it overrides earlier mobile rules. */
+@media (max-width: 700px) {
+  /* Header: make logo + name + cart + menu fit without overflowing */
+  .nav-inner { width: calc(100% - 24px); gap: 8px; height: 64px; }
+  .nav-links { top: 64px; }
+  .logo-slot { width: 60px; height: 42px; border-radius: 12px; position: relative; }
+  .logo-slot img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: contain; }
+  .brand { gap: 8px; min-width: 0; }
+  .brand strong { font-size: 13px; letter-spacing: .02em; white-space: nowrap; }
+  .brand small { font-size: 7.5px; letter-spacing: .13em; margin-top: 3px; white-space: nowrap; }
+  .nav-actions { margin-left: auto; gap: 7px; flex-shrink: 0; }
+  .cart-button, .menu-toggle { padding: 9px 10px; border-radius: 12px; }
+
+  /* Hero: keep the copy and actions, hide the artwork on phones */
+  .hero { padding: 26px 0 36px; }
+  .hero-grid { gap: 18px; }
+  .hero-art { display: none; }
+  .art-glow { width: 260px; height: 260px; }
+  .hero-art img { width: 100%; height: 235px; object-fit: cover; object-position: 78% 100%; }
+  .floating-card { right: 0; bottom: -6px; padding: 10px 12px; }
+  .hero .eyebrow { font-size: 10px; letter-spacing: .12em; }
+  .hero h1 { font-size: 38px; margin: 12px 0; }
+  .hero p { font-size: 15px; line-height: 1.55; margin: 0 auto; }
+  .hero-actions { margin: 18px 0 16px; gap: 10px; }
+  .hero-actions .btn { flex: 1; padding: 14px 12px; }
+}
