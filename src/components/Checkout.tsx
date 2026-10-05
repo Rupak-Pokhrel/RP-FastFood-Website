@@ -45,7 +45,7 @@ export default function Checkout({
         <div className="success-card">
           <CheckCircle2 size={58} />
           <h1>Order placed successfully!</h1>
-          <p>Your order <strong>#{orderId}</strong> has been sent to RP FastFood.</p>
+          <p>Your order has been sent to RP FastFood.</p>
           <button className="btn primary" onClick={onPlaced}>
             Back to Menu
           </button>
