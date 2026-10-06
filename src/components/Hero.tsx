@@ -24,7 +24,7 @@ export default function Hero({ onOrder }: { onOrder: () => void }) {
 
           <div className="hero-actions">
             <button className="btn primary" onClick={onOrder}>
-              Order Now <ArrowRight size={18} />
+              Order Now
             </button>
             <a className="btn secondary" href="#menu">
               View Menu
