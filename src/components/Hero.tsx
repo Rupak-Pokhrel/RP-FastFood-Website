@@ -8,7 +8,7 @@ export default function Hero({ onOrder }: { onOrder: () => void }) {
       <div className="container hero-grid">
         <div className="hero-copy">
           <div className="eyebrow">
-            <Sparkles size={16} /> LOCAL FLAVOR • FRESHLY PREPARED
+          LOCAL FLAVOR • FRESHLY PREPARED
           </div>
           <h1>
             Fresh Taste.
